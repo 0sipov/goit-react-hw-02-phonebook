@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import styles from './ContactForm.module.css';
+import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
   state = {
     name: '',
     number: '',
+  };
+
+  static propTypes = {
+    onCreateContact: PropTypes.func,
   };
 
   handleChange = e => {
@@ -17,6 +22,7 @@ class ContactForm extends Component {
     const { handleChange } = this;
     return (
       <form
+        className={styles.form}
         onSubmit={e => {
           e.preventDefault();
           onCreateContact(name, number);
@@ -25,6 +31,7 @@ class ContactForm extends Component {
         <label>
           Name
           <input
+            className={styles.input}
             name="name"
             type="text"
             value={name}
@@ -34,13 +41,16 @@ class ContactForm extends Component {
         <label>
           Number
           <input
+            className={styles.input}
             name="number"
             type="text"
             value={number}
             onChange={handleChange}
           ></input>
         </label>
-        <button type="submit">Add contact</button>
+        <button className={styles.addButton} type="submit">
+          Add contact
+        </button>
       </form>
     );
   }

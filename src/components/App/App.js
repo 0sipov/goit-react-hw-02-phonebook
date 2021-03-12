@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import ContactForm from '../ContactForm';
 import Filter from '../Filter';
 import ContactList from '../ContactList';
-import PropTypes from 'prop-types';
 import './App.css';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -16,23 +15,28 @@ class App extends Component {
     ],
     filter: '',
   };
-  static propTypes = {
-    contacts: PropTypes.array,
-    name: PropTypes.string,
-    number: PropTypes.string,
-    filter: PropTypes.string,
+
+  isContainName = (name, contacts) => {
+    return Boolean(
+      contacts.find(e => e.name.toLowerCase() === name.toLowerCase()),
+    );
   };
 
   handleCreateContactsList = (name, number) => {
-    this.setState(preState => {
-      return {
-        contacts: [...preState.contacts, { name, id: uuidv4(), number }],
-      };
-    });
+    const { contacts } = this.state;
+    this.isContainName(name, contacts)
+      ? alert(`Contact ${name} already exists.`)
+      : this.setState(preState => {
+          return {
+            contacts: [...preState.contacts, { name, id: uuidv4(), number }],
+          };
+        });
   };
+
   handleChangeFilter = e => {
     this.setState({ filter: e.target.value });
   };
+
   handleFilterContacts = () => {
     const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
@@ -42,11 +46,20 @@ class App extends Component {
     return filtredContacts;
   };
 
+  handleRemoveContact = contactId => {
+    const { contacts } = this.state;
+    const filtredContacts = contacts.filter(e => {
+      return e.id !== contactId;
+    });
+    this.setState({ contacts: filtredContacts });
+  };
+
   render() {
     const {
       handleCreateContactsList,
       handleFilterContacts,
       handleChangeFilter,
+      handleRemoveContact,
     } = this;
     return (
       <div className="App">
@@ -55,7 +68,10 @@ class App extends Component {
 
         <h2>Contacts</h2>
         <Filter onChangeFilter={handleChangeFilter} />
-        <ContactList filtredContacts={handleFilterContacts()} />
+        <ContactList
+          filtredContacts={handleFilterContacts()}
+          onRemoveContact={handleRemoveContact}
+        />
       </div>
     );
   }

@@ -1,21 +1,20 @@
-.form {
-  margin: 20px 0;
+.contacts {
   padding: 20px;
   width: 350px;
-  border: 1px solid black;
 }
-.input {
-  margin: 0 0 20px 0;
-  display: block;
+.contact {
+  display: flex;
 }
-
-.addButton {
+.contact + .contact {
+  margin: 10px 0 0 0;
+}
+.removeButton {
   margin: 0 0 0 auto;
   min-height: 20px;
   min-width: 80px;
   border-radius: 5px;
 }
-.addButton:hover {
+.removeButton:hover {
   cursor: pointer;
   outline: 1px solid black;
 }
