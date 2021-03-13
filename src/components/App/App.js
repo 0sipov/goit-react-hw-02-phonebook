@@ -16,15 +16,17 @@ class App extends Component {
     filter: '',
   };
 
-  isContainName = (name, contacts) => {
+  isContainName = name => {
     return Boolean(
-      contacts.find(e => e.name.toLowerCase() === name.toLowerCase()),
+      this.state.contacts.find(
+        e => e.name.toLowerCase() === name.toLowerCase(),
+      ),
     );
   };
 
-  handleCreateContactsList = (name, number) => {
-    const { contacts } = this.state;
-    this.isContainName(name, contacts)
+  handleCreateContact = contact => {
+    const { name, number } = contact;
+    this.isContainName(name)
       ? alert(`Contact ${name} already exists.`)
       : this.setState(preState => {
           return {
@@ -56,7 +58,7 @@ class App extends Component {
 
   render() {
     const {
-      handleCreateContactsList,
+      handleCreateContact,
       handleFilterContacts,
       handleChangeFilter,
       handleRemoveContact,
@@ -64,7 +66,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Phone book</h1>
-        <ContactForm onCreateContact={handleCreateContactsList} />
+        <ContactForm onCreateContact={handleCreateContact} />
 
         <h2>Contacts</h2>
         <Filter onChangeFilter={handleChangeFilter} />

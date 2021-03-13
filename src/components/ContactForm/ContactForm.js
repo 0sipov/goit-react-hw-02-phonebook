@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 
 class ContactForm extends Component {
   state = {
-    name: '',
-    number: '',
+    contact: { name: '', number: '' },
   };
 
   static propTypes = {
@@ -13,11 +12,15 @@ class ContactForm extends Component {
   };
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState(preState => {
+      return {
+        contact: { ...preState.contact, [e.target.name]: e.target.value },
+      };
+    });
   };
 
   render() {
-    const { name, number } = this.state;
+    const { contact } = this.state;
     const { onCreateContact } = this.props;
     const { handleChange } = this;
     return (
@@ -25,7 +28,7 @@ class ContactForm extends Component {
         className={styles.form}
         onSubmit={e => {
           e.preventDefault();
-          onCreateContact(name, number);
+          onCreateContact(contact);
         }}
       >
         <label>
@@ -34,7 +37,7 @@ class ContactForm extends Component {
             className={styles.input}
             name="name"
             type="text"
-            value={name}
+            value={contact.name}
             onChange={handleChange}
           ></input>
         </label>
@@ -44,7 +47,7 @@ class ContactForm extends Component {
             className={styles.input}
             name="number"
             type="text"
-            value={number}
+            value={contact.number}
             onChange={handleChange}
           ></input>
         </label>
